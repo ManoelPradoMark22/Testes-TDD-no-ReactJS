@@ -20,12 +20,12 @@
     ],
     "moduleNameMapper": {
       "^~/(.*)": "<rootDir>/src/$1"
-    }
+    },
+    "setupFilesAfterEnv": [
+      "@testing-library/react/cleanup-after-each",
+      "@testing-library/jest-dom/extend-expect"
+    ]
   },
-  "setupFilesAfterEnv": [
-    "@testing-library/react/cleanup-after-each",
-    "@testing-library/jest-dom/extend-expect"
-  ],
   "browserslist": {
     "production": [
       ">0.2%",
