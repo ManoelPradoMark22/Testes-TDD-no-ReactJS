@@ -1,10 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // import { Container } from './styles';
 
 export default function TechList() {
   const [techs, setTechs] = useState([]);
   const [newTech, setNewTech] = useState('');
+
+  /*com as dependencias vazias usando o [] funciona como um componentDidMount */
+  useEffect(() => {
+    const techs = localStorage.getItem('techs');
+
+    if(techs) {
+      setTechs(JSON.parse(techs));
+    }
+  }, []);
+
+  /*preencher o localStorage (dar um setItem) toda vez q nossa var techs mudar */
+  useEffect(() => {
+    localStorage.setItem('techs', JSON.stringify(techs));
+  }, [techs]);
 
   function handleAddTech() {
     setTechs([...techs, newTech]);
