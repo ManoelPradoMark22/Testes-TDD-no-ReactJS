@@ -1,27 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 // import { Container } from './styles';
 
 export default function TechList() {
-  const [techs, setTechs] = useState([]);
   const [newTech, setNewTech] = useState('');
 
-  /*com as dependencias vazias usando o [] funciona como um componentDidMount */
-  useEffect(() => {
-    const techs = localStorage.getItem('techs');
-
-    if(techs) {
-      setTechs(JSON.parse(techs));
-    }
-  }, []);
-
-  /*preencher o localStorage (dar um setItem) toda vez q nossa var techs mudar */
-  useEffect(() => {
-    localStorage.setItem('techs', JSON.stringify(techs));
-  }, [techs]);
+  const dispatch = useDispatch();
+  const techs = useSelector(state => state.techs);
+  /*como nao vamos criar as configs do redux e sim criar um mock para isso,
+  vamos supor que o nosso reducer se chama techs e já é um array com as techs e 
+  nao iremos adicionar id nem nada disso */
 
   function handleAddTech() {
-    setTechs([...techs, newTech]);
+    /*poderia separar essa action em uma função mas por enquanto deixaremos ela aqui dentro */
+    dispatch({ type: 'ADD_TECH', payload: { tech: newTech } });
+
     setNewTech('');
   }
 
