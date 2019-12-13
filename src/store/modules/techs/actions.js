@@ -4,3 +4,17 @@ export function addTech(tech) {
     payload: { tech }
   }
 }
+
+/*chamaremos o retorno das techs de data*/
+export function getTechsSuccess(data) {
+  return {
+    type: 'GET_TECHS_SUCCESS',
+    payload: { data }
+  }
+}
+
+export function getTechsFailure() {
+  return {
+    type: 'GET_TECHS_FAILURE',
+  }
+}
