@@ -2,6 +2,12 @@ import reducer, { INITIAL_STATE } from '~/store/modules/techs/reducer';
 import * as Techs from '~/store/modules/techs/actions'; //importar todas as actions
 
 describe('Techs reducer', () => {
+  it('DEFAULT', () => {
+    const state = reducer(undefined, {});
+
+    expect(state).toStrictEqual(INITIAL_STATE);
+  });
+
   /*should be able to add new techs
   aqui no teste de reducers podemos colocar o type da action diretamente como
   o nome do teste.
