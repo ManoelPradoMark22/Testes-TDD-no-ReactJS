@@ -7,6 +7,8 @@ export function* getTechs() {
   try {
     const response = yield call(api.get, 'techs');
 
+    console.log(response.data);
+
     yield put(getTechsSuccess(response.data));
   } catch(err) {
     yield put(getTechsFailure());

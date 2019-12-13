@@ -1,10 +1,22 @@
 import { runSaga } from 'redux-saga';
-import { getTechsSuccess } from '~/store/modules/techs/actions';
+import MockAdapter from 'axios-mock-adapter';
+import api from '~/services/api';
+
+import { getTechsSuccess, getTechsFailure } from '~/store/modules/techs/actions';
 import { getTechs } from '~/store/modules/techs/sagas';
+
+const apiMock = new MockAdapter(api);
 
 describe('Techs saga', () => {
   it ('should be able to fetch techs', async () => {
     const dispatch = jest.fn();
+
+    //colocamos o apiMock antes da chamda api, ou seja, antes do runSaga
+    /*quando eu tiver uma requisicao get na rota 'techs' (que é exatemente a rota
+    que fazemos dentro do call do saga), queremos que ele responda sempre com a resposta
+    com o status code 200 e com o resultado ['Node.js'] 
+    se quisessemos que respondesse apenas uma vez usariamos replyOnce()*/
+    apiMock.onGet('techs').reply(200, ['Node.js']);
 
     /* ao passar os seguintes métodos em options (primeiro param) no runSaga, 
     podemos sobreescrevê-los:
@@ -27,5 +39,15 @@ describe('Techs saga', () => {
       finalizar), a minha action getTechsSuccess tenha sido chamada com o array
       contendo 'Node.js'*/
     expect(dispatch).toHaveBeenCalledWith(getTechsSuccess(['Node.js']));
+  });
+
+  it ('shoul fail when api returns error', async () => {
+    const dispatch = jest.fn();
+
+    apiMock.onGet('techs').reply(500);
+
+    await runSaga({ dispatch }, getTechs).toPromise();
+
+    expect(dispatch).toHaveBeenCalledWith(getTechsFailure());
   });
 });
